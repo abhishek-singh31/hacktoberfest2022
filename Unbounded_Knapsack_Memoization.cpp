@@ -1,32 +1,42 @@
-#include<bits/stdc++.h>
+
+/* A Naive recursive implementation of
+unbounded Knapsack problem */
+#include <bits/stdc++.h>
 using namespace std;
-int dp[1005][1005];
-int knapsack(int wt[], int val[], int W,int n){
-    if(n==0 || W==0){
-        return 0;
+ 
+// Returns the maximum value that
+// can be put in a knapsack of capacity W
+int unboundedKnapsack(int W, int wt[], int val[], int idx)
+{
+ 
+    // Base Case
+    // if we are at idx 0.
+    if (idx == 0) {
+        return (W / wt[0]) * val[0];
     }
-    if(dp[n][W]!=-1)return dp[n][W];
-    if(wt[n-1]<=W){
-        return dp[n][W]=max(val[n-1]+knapsack(wt,val,W-wt[n-1],n),knapsack(wt,val,W,n-1));
+    // There are two cases either take element or not take.
+    // If not take then
+    int notTake
+        = 0 + unboundedKnapsack(W, wt, val, idx - 1);
+    // if take then weight = W-wt[idx] and index will remain
+    // same.
+    int take = INT_MIN;
+    if (wt[idx] <= W) {
+        take = val[idx]
+            + unboundedKnapsack(W - wt[idx], wt, val,
+                                idx);
     }
-    else{
-        return dp[n][W]=knapsack(wt,val,W,n-1);
-    }
+    return max(take, notTake);
 }
-int main(){
-    int n;
-    cin>>n;
-    int wt[n];
-    for(int i=0;i<n;i++){
-        cin>>wt[i];
-    }
-    int val[n];
-    for(int i=0;i<n;i++){
-        cin>>val[i];
-    }
-    int W;
-    cin>>W;
-    memset(dp,-1,sizeof(dp));
-    cout<<knapsack(wt,val,W,n);
+ 
+// Driver code
+int main()
+{
+    int W = 100;
+    int val[] = { 10, 30, 20 };
+    int wt[] = { 5, 10, 15 };
+    int n = sizeof(val) / sizeof(val[0]);
+ 
+    cout << unboundedKnapsack(W, wt, val, n - 1);
     return 0;
 }
