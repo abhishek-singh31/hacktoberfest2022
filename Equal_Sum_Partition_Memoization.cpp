@@ -2,7 +2,32 @@
 using namespace std;
 int dp[105][10005];
 bool subsetSum(int arr[],int sum,int n){
-   
+   if(sum==0){
+        return true;
+    }
+    if(n==0){
+        return false;
+    }
+    if(dp[n][sum]!=-1)return dp[n][sum];
+    if(arr[n-1]<=sum){
+//        if(sum==0){
+//         return true;
+//     }
+//     if(n==0){
+//         return false;
+//     }
+        return dp[n][sum]=subsetSum(arr,sum-arr[n-1],n-1) || subsetSum(arr,sum,n-1);
+    }
+    else{
+//        if(sum==0){
+//         return true;
+//     }
+//     if(n==0){
+//         return false;
+//     }
+       
+        return dp[n][sum]=subsetSum(arr,sum,n-1);
+    }
 }
 int main(){
     int n;
